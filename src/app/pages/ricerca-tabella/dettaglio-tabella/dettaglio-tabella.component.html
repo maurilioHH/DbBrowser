@@ -1,0 +1,50 @@
+
+<div class="container my-2">
+
+    @if(tabellaSelezionata()){
+        <div class="row mb-4">
+            Tabella: {{ tabellaSelezionata()?.tableName }}
+        </div>
+    } 
+
+    @if(listaColonne()){
+        <div class="table-container">
+        <table class="table table-striped custom-table">
+            <thead>
+                <tr>
+                    <th scope="col">Id</th>
+                    <th scope="col">Nome</th>
+                    <th scope="col">Tipo</th>
+                    <th scope="col">Lunghezza</th>
+                    <th scope="col">Precisione</th>
+                    <th scope="col">Scala</th>
+                    <th scope="col">Obbligatorio</th>
+                    <th scope="col">Valore default</th>
+                    <th scope="col">Occorrenze distinte</th>
+                    <th scope="col">Commento</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (col of listaColonne(); track $index) {
+                    <tr>
+                        <td class="text-end">{{ col.id }}</td>
+                        <td>{{ col.name }}</td>                            
+                        <td>{{ col.dataType }}</td>
+                        <td class="text-end">{{ col.dataLength }}</td>
+                        <td class="text-end">{{ col.dataPrecision }}</td>
+                        <td class="text-end">{{ col.dataScale }}</td>
+                        <td class="text-center">
+                            @if(!col.nullable){
+                                <i class="fa-solid fa-check"></i>
+                            }
+                        </td>
+                        <td>{{ col.dataDefault }}</td>
+                        <td class="text-end">{{ col.numDistinct }}</td>
+                        <td>{{ col.comments }}</td>                                                        
+                    </tr>
+                }
+            </tbody>
+        </table>
+        </div>
+    }
+</div>    

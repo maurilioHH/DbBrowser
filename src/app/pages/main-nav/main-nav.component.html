@@ -1,0 +1,27 @@
+
+<div class="container-fluid py-5 px-5">
+    <ul ngbNav #nav="ngbNav" [(activeId)]="active" [destroyOnHide]="false" class="nav-tabs">
+        <li [ngbNavItem]="1">
+            <button ngbNavLink class="custom-nav-link">Ricerca</button>
+            <ng-template ngbNavContent>
+                <p>
+                    <app-ricerca-tabella 
+                        (navItem)="active = $event"
+                        (tabellaSelezionata)="onTabellaSelezionata($event)"
+                        />
+                </p>
+            </ng-template>
+        </li>
+        <li [ngbNavItem]="2" [disabled]="tabDettaglioDisabled">
+            <button ngbNavLink class="custom-nav-link" [disabled]="tabDettaglioDisabled">Dettaglio</button>
+            <ng-template ngbNavContent>
+                <p>
+                    <app-dettaglio-tabella
+                        [tabellaSelezionata]="tabellaSelezionata"
+                    />
+                </p>
+            </ng-template>
+        </li>
+    </ul>
+    <div [ngbNavOutlet]="nav" class="border border-top-0 rounded-bottom p-3 bg-light"></div>
+</div>    

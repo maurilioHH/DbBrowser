@@ -1,0 +1,128 @@
+
+<div class="container my-2">
+    <form [formGroup]="dbFormGroup" (ngSubmit)="onSubmit()">
+        
+        @if(dbFormGroup.errors?.['tabellaRichiestaConTutti'] && dbFormGroup.controls.nomeTabella.dirty){
+            <div class="text-danger">
+                Devi inserire almeno il Database o la Tabella.
+            </div>
+        }
+        <div class="row" [class.mb-5]="!listaTabelle()" [class.mb-4]="listaTabelle()" >
+            <div class="col-md-5">
+                <label for="database" class="form-label">Database</label>
+                <select 
+                    class="form-select w-100" 
+                    [formControl]="dbFormGroup.controls.database" 
+                    id="database"
+                    (change)="onSelectDatabase()"
+                >
+                    <option value="tutti" selected>Tutti</option>
+                    @for (item of databases | keyvalue; track item.key) {
+                        <option [value]="item.key">
+                            {{ item.value.url }} - {{ item.value.username }}
+                        </option>
+                    }
+                </select>        
+            </div>
+            <div class="col-md-2">
+                <label for="owner" class="form-label">Owner</label>
+                <select 
+                    class="form-select w-100" 
+                    [formControl]="dbFormGroup.controls.owner" 
+                    id="owner"
+                    (change)="onSelectOwner()"
+                >
+                    <option value="" selected></option>
+                    @for (item of listaOwners(); track $index) {
+                        <option [value]="item">
+                            {{ item }}
+                        </option>
+                    }
+                </select>        
+            </div>
+            <div class="col-md-3">
+                <label for="nomeTabella" class="form-label">Nome</label>
+                <input 
+                    type="text" 
+                    id="nomeTabella" 
+                    class="form-control" 
+                    placeholder="Inserisci il nome tabella/vista"
+                    [formControl]="dbFormGroup.controls.nomeTabella">
+            </div>
+
+            <!-- TIPOLOGIA -->
+
+            <div class="col-md-2">
+                <label for="tipologia" class="form-label">Tipologia</label>
+                <select 
+                    class="form-select w-100" 
+                    [formControl]="dbFormGroup.controls.tipologia" 
+                    id="owner"
+                    (change)="onSelectTipologia()"
+                >
+                <option value="tutte" selected>Tutte</option>
+                <option value="T">Tabelle</option>
+                <option value="V">Viste</option>
+                </select>        
+            </div>    
+            
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-2">
+                <div ngbDropdown [autoClose]="'outside'" class="d-inline-block">
+                    <button 
+                        type="button" 
+                        class="btn bg-white border text-start w-100" 
+                        id="dropdownCheckbox" 
+                        ngbDropdownToggle>
+                        {{ getDropdownLabel() }}
+                    </button>
+
+                    <div ngbDropdownMenu aria-labelledby="dropdownCheckbox" class="p-3" style="min-width: 200px;">
+                    <div formArrayName="tipologie">
+                        @for (tipologia of tipologieObj; track tipologia.id; let i = $index) {
+                            <div class="form-check mb-2">
+                                <input 
+                                    type="checkbox" 
+                                    class="form-check-input" 
+                                    [id]="'chk-' + tipologia.id" 
+                                    [formControlName]="i"
+                                />
+                                <label class="form-check-label" [for]="'chk-' + tipologia.id">
+                                    {{ tipologia.label }}
+                                </label>
+                            </div>
+                        } 
+                        @empty {
+                            <div class="text-muted small">Nessuna opzione disponibile</div>
+                        }
+
+                    </div>
+                    </div>
+                </div>         
+            </div>
+        </div>
+
+
+        <div class="row mb-3">
+            <div class="col-md-2">
+                <button type="reset" (click)="onReset()" class="btn btn-secondary w-100 mb-1">
+                    Azzera
+                </button>    
+            </div>
+            <div class="col-md-2">
+                <button type="submit" [disabled]="dbFormGroup.invalid" class="btn btn-primary w-100 mb-1">
+                    Cerca
+                </button>    
+            </div>
+        </div>
+    </form>    
+
+    @if(listaTabelle()){
+        <app-lista-tabella
+            [listaTabelle]="listaTabelle()"
+            (tabellaSelezionata)="onTabellaSelezionata($event)">
+        </app-lista-tabella>
+    }
+</div>
