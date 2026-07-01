@@ -62,33 +62,28 @@
                     </button>
 
                     <div ngbDropdownMenu aria-labelledby="dropdownCheckbox" class="p-3" style="min-width: 200px;">
-                    <div formArrayName="tipologie">
-                        @for (tipologia of tipologieObj; track tipologia.id; let i = $index) {
-                            <div class="form-check mb-2">
-                                <input 
-                                    type="checkbox" 
-                                    class="form-check-input" 
-                                    [id]="'chk-' + tipologia.id" 
-                                    [formControlName]="i"
-                                />
-                                <label class="form-check-label" [for]="'chk-' + tipologia.id">
-                                    {{ tipologia.label }}
-                                </label>
-                            </div>
-                        } 
-                        @empty {
-                            <div class="text-muted small">Nessuna opzione disponibile</div>
-                        }
-
-                    </div>
+                        <div formArrayName="tipologie">
+                            @for (tipologia of tipologieList; track tipologia.id; let i = $index) {
+                                <div class="form-check mb-2">
+                                    <input 
+                                        type="checkbox" 
+                                        class="form-check-input" 
+                                        [id]="'chk-' + tipologia.id" 
+                                        [formControlName]="i"
+                                    />
+                                    <label class="form-check-label" [for]="'chk-' + tipologia.id">
+                                        {{ tipologia.label }}
+                                    </label>
+                                </div>
+                            } 
+                            @empty {
+                                <div class="text-muted small">Nessuna opzione disponibile</div>
+                            }
+                        </div>
                     </div>
                 </div>         
             </div>
-            
         </div>
-
-
-
         <div class="row mb-3">
             <div class="col-md-2">
                 <button type="button" (click)="onReset()" class="btn btn-secondary w-100 mb-1">

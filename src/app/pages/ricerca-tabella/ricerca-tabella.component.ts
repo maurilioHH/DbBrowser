@@ -27,7 +27,6 @@ export class RicercaTabellaComponent implements OnInit {
   formBuilder = inject(FormBuilder);
 
   databases: DbConfigMap | undefined;
-  //listaTabelle?: InfoTabella[] = undefined;
   listaTabelle = signal<InfoTabella[] | undefined>(undefined);
   listaOwners = signal<string[] | undefined>(undefined);
 
@@ -38,7 +37,7 @@ export class RicercaTabellaComponent implements OnInit {
 
   private destroyRef = inject(DestroyRef);
 
-  tipologieObj: DropdownOption[] = [
+  tipologieList: DropdownOption[] = [
     { id: 'T', label: 'Tabelle' },
     { id: 'V', label: 'Viste' }
   ];
@@ -51,7 +50,7 @@ export class RicercaTabellaComponent implements OnInit {
       nomeTabella: new FormControl('', {
         validators: [Validators.minLength(3)],
       }),
-      tipologie: new FormArray(this.tipologieObj.map((option) => new FormControl(option.id === this.tipologiaDefault)))
+      tipologie: new FormArray(this.tipologieList.map((option) => new FormControl(option.id === this.tipologiaDefault)))
     },
     {
       validators: almenoUnoObbligatorioValidator,
@@ -101,14 +100,14 @@ export class RicercaTabellaComponent implements OnInit {
       return;
     }
 
-    const ownersSubscription = this.databaseService
+    this.databaseService
       .searchOwners(selectedDb) // Non serve più l'operatore '!'
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: (data) => {
           this.listaOwners.set(data);
         },
       });
-    this.destroyRef.onDestroy(() => ownersSubscription.unsubscribe());
   }
 
   onSelectOwner() {
@@ -123,7 +122,7 @@ export class RicercaTabellaComponent implements OnInit {
 
     const formValue = this.dbFormGroup.value;
 
-    const tipologieSelezionateFinali = this.tipologieObj
+    const tipologieSelezionateFinali = this.tipologieList
       .filter((_, index) => formValue.tipologie![index])
       .map(option => option.id);
 
@@ -147,14 +146,13 @@ export class RicercaTabellaComponent implements OnInit {
   }
 
   onReset() {
-
     this.dbFormGroup.reset({
       database: 'tutti', // Ripristina il valore iniziale se vuoi
       owner: '',
       nomeTabella: ''
     });
 
-    const valoriDefaultTipologie = this.tipologieObj.map(option => option.id === this.tipologiaDefault);
+    const valoriDefaultTipologie = this.tipologieList.map(option => option.id === this.tipologiaDefault);
     this.tipologieFormArray.reset(valoriDefaultTipologie);
 
     this.dbFormGroup.updateValueAndValidity();
@@ -179,7 +177,7 @@ export class RicercaTabellaComponent implements OnInit {
     const selectedValues = this.tipologieFormArray.value; // es. [true, false, true]
     
     // Filtriamo le opzioni corrispondenti ai 'true'
-    const selectedLabels = this.tipologieObj
+    const selectedLabels = this.tipologieList
       .filter((_, index) => selectedValues[index])
       .map(option => option.label);
 
