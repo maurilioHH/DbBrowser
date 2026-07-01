@@ -49,31 +49,13 @@
                     placeholder="Inserisci il nome tabella/vista"
                     [formControl]="dbFormGroup.controls.nomeTabella">
             </div>
-
-            <!-- TIPOLOGIA -->
-
             <div class="col-md-2">
-                <label for="tipologia" class="form-label">Tipologia</label>
-                <select 
-                    class="form-select w-100" 
-                    [formControl]="dbFormGroup.controls.tipologia" 
-                    id="owner"
-                    (change)="onSelectTipologia()"
-                >
-                <option value="tutte" selected>Tutte</option>
-                <option value="T">Tabelle</option>
-                <option value="V">Viste</option>
-                </select>        
-            </div>    
-            
-        </div>
-
-        <div class="row mb-3">
-            <div class="col-md-2">
-                <div ngbDropdown [autoClose]="'outside'" class="d-inline-block">
+                <label for="dropdownCheckbox" class="form-label">Tipologia</label>
+                <div ngbDropdown [autoClose]="'outside'">
                     <button 
                         type="button" 
-                        class="btn bg-white border text-start w-100" 
+                        class="btn bg-white border text-start w-100 form-select" 
+                        [ngClass]="getDropdownColorClass()"
                         id="dropdownCheckbox" 
                         ngbDropdownToggle>
                         {{ getDropdownLabel() }}
@@ -102,7 +84,9 @@
                     </div>
                 </div>         
             </div>
+            
         </div>
+
 
 
         <div class="row mb-3">

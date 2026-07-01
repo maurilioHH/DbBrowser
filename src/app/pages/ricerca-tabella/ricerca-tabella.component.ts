@@ -4,7 +4,7 @@ import { DatabaseService } from '../../services/database.service';
 import { DbConfigMap } from '../../model/db-config.model';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { ReactiveFormsModule, FormArray } from '@angular/forms';
-import { KeyValuePipe } from '@angular/common';
+import { KeyValuePipe, NgClass } from '@angular/common';
 import { InfoTabella } from '../../model/info-tabella';
 import { ListaTabella } from './lista-tabelle/lista-tabella.component';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -17,7 +17,7 @@ interface DropdownOption {
 
 @Component({
   selector: 'app-ricerca-tabella',
-  imports: [ReactiveFormsModule, KeyValuePipe, ListaTabella, NgbDropdownModule],
+  imports: [ReactiveFormsModule, KeyValuePipe, ListaTabella, NgbDropdownModule, NgClass],
   templateUrl: './ricerca-tabella.component.html',
   styleUrl: './ricerca-tabella.component.css',
 })
@@ -123,14 +123,14 @@ export class RicercaTabellaComponent implements OnInit {
 
     console.log('tipologieSelezionateFinali: ', tipologieSelezionateFinali);
 
-    return;
+    //return;
 
 
     let request: SearchTablesRequest = {
       databaseName: this.dbFormGroup.controls.database.value === 'tutti' ? null : this.dbFormGroup.controls.database.value,
       owner: this.dbFormGroup.controls.owner.value ?? undefined,
       tableName: this.dbFormGroup.controls.nomeTabella.value ?? undefined,
-      tipologia: this.dbFormGroup.controls.tipologia.value === 'tutte' ? null : this.dbFormGroup.controls.tipologia.value
+      tipologie: tipologieSelezionateFinali
     };
 
     this.databaseService.searchTables(request)
@@ -182,6 +182,16 @@ export class RicercaTabellaComponent implements OnInit {
       return `${selectedLabels.length} selezionati`;
     }
     return selectedLabels.join(', ');
+  }
+
+  // Restituisce la classe CSS per il colore del testo
+  getDropdownColorClass(): string {
+    // Verifichiamo se ci sono elementi selezionati (puoi usare la stessa logica che usi in getDropdownLabel)
+    const selectedValues = this.languagesFormArray.value;
+    const hasSelection = selectedValues.some((val: boolean) => val === true);
+
+    // Se NON c'è nessuna selezione, ritorna 'text-muted' (grigio), altrimenti testo scuro
+    return hasSelection ? 'text-dark' : 'text-muted';
   }
 
 
