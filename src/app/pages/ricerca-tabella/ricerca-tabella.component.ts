@@ -47,13 +47,10 @@ export class RicercaTabellaComponent implements OnInit {
   dbFormGroup = new FormGroup(
     {
       database: new FormControl('tutti', { updateOn: 'change' }),
-      owner: new FormControl('', {
-        validators: [Validators.minLength(3)],
-      }),
+      owner: new FormControl(''),
       nomeTabella: new FormControl('', {
         validators: [Validators.minLength(3)],
       }),
-      tipologia: new FormControl('tutte'),
       tipologie: new FormArray(this.tipologieObj.map((option) => new FormControl(option.id === this.tipologiaDefault)))
     },
     {
@@ -73,9 +70,18 @@ export class RicercaTabellaComponent implements OnInit {
     this.dbFormGroup.controls.nomeTabella.valueChanges
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((nuovoValore) => {
+        this.listaTabelle.set(undefined);
+        this.tabellaSelezionata.emit(undefined);
+      });
+
+    this.dbFormGroup.controls.tipologie.valueChanges
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((nuovoValore) => {
         console.log(nuovoValore);
         this.listaTabelle.set(undefined);
+        this.tabellaSelezionata.emit(undefined);
       });
+
   }
 
   onSelectDatabase() {
@@ -123,9 +129,6 @@ export class RicercaTabellaComponent implements OnInit {
 
     console.log('tipologieSelezionateFinali: ', tipologieSelezionateFinali);
 
-    //return;
-
-
     let request: SearchTablesRequest = {
       databaseName: this.dbFormGroup.controls.database.value === 'tutti' ? null : this.dbFormGroup.controls.database.value,
       owner: this.dbFormGroup.controls.owner.value ?? undefined,
@@ -144,11 +147,16 @@ export class RicercaTabellaComponent implements OnInit {
   }
 
   onReset() {
+
     this.dbFormGroup.reset({
       database: 'tutti', // Ripristina il valore iniziale se vuoi
       owner: '',
-      nomeTabella: '',
+      nomeTabella: ''
     });
+
+    const valoriDefaultTipologie = this.tipologieObj.map(option => option.id === this.tipologiaDefault);
+    this.tipologieFormArray.reset(valoriDefaultTipologie);
+
     this.dbFormGroup.updateValueAndValidity();
 
     this.listaOwners.set(undefined);
@@ -162,13 +170,13 @@ export class RicercaTabellaComponent implements OnInit {
   }
 
 
-  get languagesFormArray(): FormArray {
+  get tipologieFormArray(): FormArray {
     return this.dbFormGroup.get('tipologie') as FormArray;
   }
 
   // Genera la label dinamica per il bottone basandosi sui booleani del FormArray
   getDropdownLabel(): string {
-    const selectedValues = this.languagesFormArray.value; // es. [true, false, true]
+    const selectedValues = this.tipologieFormArray.value; // es. [true, false, true]
     
     // Filtriamo le opzioni corrispondenti ai 'true'
     const selectedLabels = this.tipologieObj
@@ -187,7 +195,7 @@ export class RicercaTabellaComponent implements OnInit {
   // Restituisce la classe CSS per il colore del testo
   getDropdownColorClass(): string {
     // Verifichiamo se ci sono elementi selezionati (puoi usare la stessa logica che usi in getDropdownLabel)
-    const selectedValues = this.languagesFormArray.value;
+    const selectedValues = this.tipologieFormArray.value;
     const hasSelection = selectedValues.some((val: boolean) => val === true);
 
     // Se NON c'è nessuna selezione, ritorna 'text-muted' (grigio), altrimenti testo scuro
