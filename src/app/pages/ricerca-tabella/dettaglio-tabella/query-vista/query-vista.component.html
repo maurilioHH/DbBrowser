@@ -1,12 +1,12 @@
 <div ngbAccordion>
-    <div ngbAccordionItem [collapsed]="false">
+    <div ngbAccordionItem [collapsed]="true">
         <h2 ngbAccordionHeader>
-            <button ngbAccordionButton>Simple</button>
+            <button ngbAccordionButton>Query</button>
         </h2>
         <div ngbAccordionCollapse>
             <div ngbAccordionBody>
                 <ng-template>
-                    {{ queryText() }}
+                    <pre>{{ queryText() }}</pre>
                 </ng-template>
             </div>
         </div>

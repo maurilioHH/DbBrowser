@@ -17,3 +17,7 @@
   color: #999;
   border-bottom: 1px solid var(--bs-border-color);
 }
+
+app-ricerca-tabella {
+  margin-left: 1px;
+}

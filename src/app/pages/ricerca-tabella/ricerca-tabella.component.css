@@ -1,8 +1,10 @@
 .table-container {
-    display: flex;
-    flex-direction: column;
-    height: 100vh;    /* Forza il componente a non superare lo schermo */
-    overflow: hidden;    /* Impedisce alla pagina intera di scrollare */
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  /* Forza il componente a non superare lo schermo */
+  overflow: hidden;
+  /* Impedisce alla pagina intera di scrollare */
 }
 
 
@@ -10,9 +12,14 @@
   --bs-btn-disabled-bg: var(--bs-secondary-bg, #6c757d);
   --bs-btn-disabled-border-color: var(--bs-secondary-border-subtle, #6c757d);
   --bs-btn-disabled-color: #999;
-  opacity: 1; 
+  opacity: 1;
 }
 
 .dropdown-toggle::after {
   display: none !important;
+}
+
+.ric-tabella {
+  margin: auto !important;
+  width: 100%;
 }

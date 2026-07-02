@@ -1,5 +1,5 @@
 
-<div class="container my-2">
+<div class="container my-2 ric-tabella">
     <form [formGroup]="dbFormGroup" (ngSubmit)="onSubmit()">
         
         @if(dbFormGroup.errors?.['tabellaRichiestaConTutti'] && dbFormGroup.controls.nomeTabella.dirty){
@@ -25,7 +25,7 @@
                 </select>        
             </div>
             <div class="col-md-2">
-                <label for="owner" class="form-label">Owner</label>
+                <label for="owner" class="form-label">Schema</label>
                 <select 
                     class="form-select w-100" 
                     [formControl]="dbFormGroup.controls.owner" 

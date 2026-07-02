@@ -2,13 +2,16 @@
 <div class="container my-2">
 
     @if(tabellaSelezionata()){
-        <div class="row mb-4">
-            {{tabellaSelezionata()?.type === 'T' ? 'Tabella' : 'Vista'}} : {{ tabellaSelezionata()?.name }}
+        <div class="row mb-2">
+            <p class="labelTabella">
+                {{tabellaSelezionata()?.type === 'T' ? 'Tabella' : 'Vista'}} &nbsp; <b> {{ tabellaSelezionata()?.name }} </b>
+            </p>
         </div>
-        
-        @if(tabellaSelezionata()?.type === 'V'){
-            <app-query-vista [queryText]="'accordion text'"></app-query-vista>
-        }    
+        <div class="row mb-4">
+            @if(tabellaSelezionata()?.type === 'V'){
+                <app-query-vista [queryText]="queryText()"></app-query-vista>
+            }    
+        </div>
     } 
 
     @if(listaColonne()){

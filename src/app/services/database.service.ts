@@ -6,6 +6,7 @@ import { DbConfigMap } from '../model/db-config.model';
 import { InfoTabellaVista } from '../model/info-tabella-vista';
 import { SearchTableColumnsRequest } from '../model/search-table-columns-request';
 import { InfoColonna } from '../model/info-colonna';
+import { QueryViewRequest } from '../model/query-view-request';
 
 @Injectable({
   providedIn: 'root'
@@ -52,5 +53,16 @@ export class DatabaseService {
       })
     );
   } 
+
+  public getQueryView(request: QueryViewRequest): Observable<string>{
+    return this.httpClient.post('http://localhost:8085/api/database/getQueryView', 
+      request, { responseType: 'text' }).pipe(
+      catchError((error) => {
+        console.log(error);
+        return throwError(() => error);
+      })
+    );
+  } 
+
 
 }
