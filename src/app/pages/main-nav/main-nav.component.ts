@@ -10,7 +10,7 @@ import {
 } from '@ng-bootstrap/ng-bootstrap';
 import { RicercaTabellaComponent } from '../ricerca-tabella/ricerca-tabella.component';
 import { DettaglioTabellaComponent } from '../ricerca-tabella/dettaglio-tabella/dettaglio-tabella.component';
-import { InfoTabella } from '../../model/info-tabella';
+import { InfoTabellaVista } from '../../model/info-tabella-vista';
 
 @Component({
   selector: 'app-main-nav',
@@ -31,10 +31,10 @@ import { InfoTabella } from '../../model/info-tabella';
 
 export class MainNavComponent {
   active = 1;
-  tabellaSelezionata: InfoTabella | undefined = undefined;
+  tabellaSelezionata: InfoTabellaVista | undefined = undefined;
   tabDettaglioDisabled = true;
 
-  onTabellaSelezionata(tabSelezionata: InfoTabella | undefined){
+  onTabellaSelezionata(tabSelezionata: InfoTabellaVista | undefined){
     //console.log('tabSelezionata: ', tabSelezionata);
     this.tabellaSelezionata = tabSelezionata;
     this.tabDettaglioDisabled = this.tabellaSelezionata === undefined;

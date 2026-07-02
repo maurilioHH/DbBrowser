@@ -3,8 +3,12 @@
 
     @if(tabellaSelezionata()){
         <div class="row mb-4">
-            Tabella: {{ tabellaSelezionata()?.tableName }}
+            {{tabellaSelezionata()?.type === 'T' ? 'Tabella' : 'Vista'}} : {{ tabellaSelezionata()?.name }}
         </div>
+        
+        @if(tabellaSelezionata()?.type === 'V'){
+            <app-query-vista [queryText]="'accordion text'"></app-query-vista>
+        }    
     } 
 
     @if(listaColonne()){

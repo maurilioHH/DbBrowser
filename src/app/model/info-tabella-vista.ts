@@ -1,7 +1,8 @@
-export interface InfoTabella {
+export interface InfoTabellaVista {
     dbKey: string;
     url: string;
     user: string;
     owner: string;
-    tableName: string;
+    name: string;
+    type: string;
 }

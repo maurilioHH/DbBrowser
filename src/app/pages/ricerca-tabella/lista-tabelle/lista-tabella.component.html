@@ -8,18 +8,20 @@
                         <th scope="col">User</th>
                         <th scope="col">Owner</th>
                         <th scope="col">Nome</th>
+                        <th scope="col">Tipologia</th>
                         <th scope="col"></th>
                     </tr>
                 </thead>
                 <tbody>
-                    @for (table of listaTabelle(); track $index) {
+                    @for (tableView of listaTabelle(); track $index) {
                         <tr>
-                            <td>{{ table.url }}</td>
-                            <td>{{ table.user }}</td>
-                            <td>{{ table.owner }}</td>
-                            <td>{{ table.tableName }}</td>
+                            <td>{{ tableView.url }}</td>
+                            <td>{{ tableView.user }}</td>
+                            <td>{{ tableView.owner }}</td>
+                            <td>{{ tableView.name }}</td>
+                            <td>{{ tableView.type }}</td>
                             <td>
-                            <i class="fa-solid fa-magnifying-glass pointer" (click)="onSelectTable(table)"></i>
+                            <i class="fa-solid fa-magnifying-glass pointer" (click)="onSelectTable(tableView)"></i>
                             </td>
                         </tr>
                     }

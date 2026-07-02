@@ -5,7 +5,7 @@ import { DbConfigMap } from '../../model/db-config.model';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { ReactiveFormsModule, FormArray } from '@angular/forms';
 import { KeyValuePipe, NgClass } from '@angular/common';
-import { InfoTabella } from '../../model/info-tabella';
+import { InfoTabellaVista } from '../../model/info-tabella-vista';
 import { ListaTabella } from './lista-tabelle/lista-tabella.component';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
@@ -27,10 +27,10 @@ export class RicercaTabellaComponent implements OnInit {
   formBuilder = inject(FormBuilder);
 
   databases: DbConfigMap | undefined;
-  listaTabelle = signal<InfoTabella[] | undefined>(undefined);
+  listaTabelle = signal<InfoTabellaVista[] | undefined>(undefined);
   listaOwners = signal<string[] | undefined>(undefined);
 
-  tabellaSelezionata = output<InfoTabella | undefined>();
+  tabellaSelezionata = output<InfoTabellaVista | undefined>();
   navItem = output<number>();
 
   tipologieSelezionate: string[] = [];
@@ -38,8 +38,8 @@ export class RicercaTabellaComponent implements OnInit {
   private destroyRef = inject(DestroyRef);
 
   tipologieList: DropdownOption[] = [
-    { id: 'T', label: 'Tabelle' },
-    { id: 'V', label: 'Viste' }
+    { id: 'T', label: 'Tabella' },
+    { id: 'V', label: 'Vista' }
   ];
   tipologiaDefault = 'T';
 
@@ -162,7 +162,7 @@ export class RicercaTabellaComponent implements OnInit {
     this.tabellaSelezionata.emit(undefined);
   }
 
-  onTabellaSelezionata(tabella: InfoTabella) {
+  onTabellaSelezionata(tabella: InfoTabellaVista) {
     this.tabellaSelezionata.emit(tabella);
     this.navItem.emit(2);
   }

@@ -3,7 +3,7 @@ import { inject, Injectable } from '@angular/core';
 import { catchError, Observable, throwError } from 'rxjs';
 import { SearchTablesRequest } from './../model/search-tables-request';
 import { DbConfigMap } from '../model/db-config.model';
-import { InfoTabella } from '../model/info-tabella';
+import { InfoTabellaVista } from '../model/info-tabella-vista';
 import { SearchTableColumnsRequest } from '../model/search-table-columns-request';
 import { InfoColonna } from '../model/info-colonna';
 
@@ -35,8 +35,8 @@ export class DatabaseService {
     );
   }
 
-  public searchTables(request: SearchTablesRequest): Observable<InfoTabella[]>{
-    return this.httpClient.post<InfoTabella[]>('http://localhost:8085/api/database/searchTablesAndViews', request).pipe(
+  public searchTables(request: SearchTablesRequest): Observable<InfoTabellaVista[]>{
+    return this.httpClient.post<InfoTabellaVista[]>('http://localhost:8085/api/database/searchTablesAndViews', request).pipe(
       catchError((error) => {
         console.log(error);
         return throwError(() => error);

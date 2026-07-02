@@ -1,5 +1,5 @@
 import { Component, Directive, EventEmitter, input, Input, model, output, Output, QueryList, ViewChildren } from '@angular/core';
-import { InfoTabella } from '../../../model/info-tabella';
+import { InfoTabellaVista } from '../../../model/info-tabella-vista';
 
 
 @Component({
@@ -11,12 +11,12 @@ import { InfoTabella } from '../../../model/info-tabella';
 
 export class ListaTabella {
 
-  listaTabelle = input<InfoTabella[]>();
+  listaTabelle = input<InfoTabellaVista[]>();
   
-  tabellaSelezionata = output<InfoTabella>();
+  tabellaSelezionata = output<InfoTabellaVista>();
 
 
-  onSelectTable(table: InfoTabella){
+  onSelectTable(table: InfoTabellaVista){
 	  this.tabellaSelezionata.emit(table);
   }
 
