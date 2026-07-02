@@ -1,5 +1,5 @@
 
-<div class="container my-2 ric-tabella">
+<div class="container my-2">
     <form [formGroup]="dbFormGroup" (ngSubmit)="onSubmit()">
         
         @if(dbFormGroup.errors?.['tabellaRichiestaConTutti'] && dbFormGroup.controls.nomeTabella.dirty){
