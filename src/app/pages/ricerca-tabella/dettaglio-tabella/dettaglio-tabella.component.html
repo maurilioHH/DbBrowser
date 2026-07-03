@@ -1,13 +1,15 @@
 
-<div class="container my-2">
+<div class="container-fluid my-2 mx-auto w-95">
 
     @if(tabellaSelezionata()){
-        <div class="row mb-2">
-            <p class="labelTabella">
-                {{tabellaSelezionata()?.type === 'T' ? 'Tabella' : 'Vista'}} &nbsp; <b> {{ tabellaSelezionata()?.name }} </b>
-            </p>
+        <div class="row mb-3">
+            <div class="col-auto">
+                <div class="labelTabella">
+                    {{tabellaSelezionata()?.type === 'T' ? 'Tabella' : 'Vista'}} &nbsp; <b> {{ tabellaSelezionata()?.name }} </b>
+                </div>
+            </div>
         </div>
-        <div class="row mb-4">
+        <div class="row mb-3">
             @if(tabellaSelezionata()?.type === 'V'){
                 <app-query-vista [queryText]="queryText()"></app-query-vista>
             }    

@@ -1,10 +1,12 @@
 
-<div class="container my-2">
+<div class="container-fluid my-2 mx-auto w-95">
     <form [formGroup]="dbFormGroup" (ngSubmit)="onSubmit()">
         
         @if(dbFormGroup.errors?.['tabellaRichiestaConTutti'] && dbFormGroup.controls.nomeTabella.dirty){
-            <div class="text-danger">
-                Devi inserire almeno il Database o la Tabella.
+            <div class="row mb-2">
+                <div class="text-danger">
+                    Inserire almeno il Database o il Nome
+                </div>
             </div>
         }
         <div class="row" [class.mb-5]="!listaTabelle()" [class.mb-4]="listaTabelle()" >

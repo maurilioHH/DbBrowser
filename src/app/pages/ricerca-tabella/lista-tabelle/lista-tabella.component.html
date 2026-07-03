@@ -1,4 +1,4 @@
-<div class="container py-2 px-0">
+<div class="container-fluid py-2 px-0">
     <div class="table-container">
         @if(listaTabelle()!.length > 0){
             <table class="table table-striped custom-table">
@@ -15,13 +15,17 @@
                 <tbody>
                     @for (tableView of listaTabelle(); track $index) {
                         <tr>
-                            <td>{{ tableView.url }}</td>
+                            <td><span class="ms-2">{{ tableView.url }}</span></td>
                             <td>{{ tableView.user }}</td>
                             <td>{{ tableView.owner }}</td>
                             <td>{{ tableView.name }}</td>
-                            <td>{{ tableView.type }}</td>
+                            <td>{{ tableView.type === 'T' ? 'Tabella' : 'Vista' }}</td>
                             <td>
-                            <i class="fa-solid fa-magnifying-glass pointer" (click)="onSelectTable(tableView)"></i>
+                                <span class="me-2">
+                                    <i class="fa-solid fa-magnifying-glass pointer" 
+                                    (click)="onSelectTable(tableView)">
+                                    </i>
+                                </span>
                             </td>
                         </tr>
                     }

@@ -3,7 +3,7 @@
   flex-direction: column;
   overflow-y: auto; /* Mostra la barra di scorrimento verticale a destra se serve */
   height: auto;        /* L'altezza si adatta al contenuto */
-  max-height: 60vh;    /* Ma non supererà mai il valore % dell'altezza dello schermo */
+  max-height: 50vh;    /* Ma non supererà mai il valore % dell'altezza dello schermo */
   border-radius: 1%;
 }
 
@@ -25,8 +25,6 @@
   display: flex;
   background-color: #ffffff;
   border-radius: var(--bs-border-radius);
-  width: auto;
   border: 1px solid var(--bs-border-color);
   padding: 10px;
-  margin-left: 1%;
 }

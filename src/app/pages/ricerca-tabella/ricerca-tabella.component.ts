@@ -17,11 +17,16 @@ interface DropdownOption {
 
 @Component({
   selector: 'app-ricerca-tabella',
-  imports: [ReactiveFormsModule, KeyValuePipe, ListaTabella, NgbDropdownModule, NgClass],
+  imports: [
+    ReactiveFormsModule,
+    KeyValuePipe,
+    ListaTabella,
+    NgbDropdownModule,
+    NgClass,
+  ],
   templateUrl: './ricerca-tabella.component.html',
   styleUrl: './ricerca-tabella.component.css',
 })
-
 export class RicercaTabellaComponent implements OnInit {
   databaseService = inject(DatabaseService);
   formBuilder = inject(FormBuilder);
@@ -50,7 +55,11 @@ export class RicercaTabellaComponent implements OnInit {
       nomeTabella: new FormControl('', {
         validators: [Validators.minLength(3)],
       }),
-      tipologie: new FormArray(this.tipologieList.map((option) => new FormControl(option.id === this.tipologiaDefault)))
+      tipologie: new FormArray(
+        this.tipologieList.map(
+          (option) => new FormControl(option.id === this.tipologiaDefault),
+        ),
+      ),
     },
     {
       validators: almenoUnoObbligatorioValidator,
@@ -58,7 +67,8 @@ export class RicercaTabellaComponent implements OnInit {
   );
 
   ngOnInit(): void {
-    this.databaseService.getDatabases()
+    this.databaseService
+      .getDatabases()
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: (data) => {
@@ -80,7 +90,6 @@ export class RicercaTabellaComponent implements OnInit {
         this.listaTabelle.set(undefined);
         this.tabellaSelezionata.emit(undefined);
       });
-
   }
 
   onSelectDatabase() {
@@ -113,46 +122,50 @@ export class RicercaTabellaComponent implements OnInit {
   onSelectOwner() {
     this.listaTabelle.set(undefined);
   }
-  
-  onSelectTipologia(){
+
+  onSelectTipologia() {
     this.listaTabelle.set(undefined);
   }
 
   onSubmit() {
-
     const formValue = this.dbFormGroup.value;
 
     const tipologieSelezionateFinali = this.tipologieList
       .filter((_, index) => formValue.tipologie![index])
-      .map(option => option.id);
+      .map((option) => option.id);
 
     console.log('tipologieSelezionateFinali: ', tipologieSelezionateFinali);
 
     let request: SearchTablesRequest = {
-      databaseName: this.dbFormGroup.controls.database.value === 'tutti' ? null : this.dbFormGroup.controls.database.value,
+      databaseName:
+        this.dbFormGroup.controls.database.value === 'tutti'
+          ? null
+          : this.dbFormGroup.controls.database.value,
       owner: this.dbFormGroup.controls.owner.value ?? undefined,
       tableName: this.dbFormGroup.controls.nomeTabella.value ?? undefined,
-      tipologie: tipologieSelezionateFinali
+      tipologie: tipologieSelezionateFinali,
     };
 
-    this.databaseService.searchTables(request)
+    this.databaseService
+      .searchTables(request)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: (data) => {
           this.listaTabelle.set(data);
         },
       });
-    
   }
 
   onReset() {
     this.dbFormGroup.reset({
       database: 'tutti', // Ripristina il valore iniziale se vuoi
       owner: '',
-      nomeTabella: ''
+      nomeTabella: '',
     });
 
-    const valoriDefaultTipologie = this.tipologieList.map(option => option.id === this.tipologiaDefault);
+    const valoriDefaultTipologie = this.tipologieList.map(
+      (option) => option.id === this.tipologiaDefault,
+    );
     this.tipologieFormArray.reset(valoriDefaultTipologie);
 
     this.dbFormGroup.updateValueAndValidity();
@@ -167,7 +180,6 @@ export class RicercaTabellaComponent implements OnInit {
     this.navItem.emit(2);
   }
 
-
   get tipologieFormArray(): FormArray {
     return this.dbFormGroup.get('tipologie') as FormArray;
   }
@@ -175,15 +187,23 @@ export class RicercaTabellaComponent implements OnInit {
   // Genera la label dinamica per il bottone basandosi sui booleani del FormArray
   getDropdownLabel(): string {
     const selectedValues = this.tipologieFormArray.value; // es. [true, false, true]
-    
+
     // Filtriamo le opzioni corrispondenti ai 'true'
     const selectedLabels = this.tipologieList
       .filter((_, index) => selectedValues[index])
-      .map(option => option.label);
+      .map((option) => option.label);
 
     if (selectedLabels.length === 0) {
       return 'Seleziona opzioni';
     }
+
+    if(selectedLabels.length === 2) {
+      const labelsLength = selectedLabels[0].length + selectedLabels[1].length;
+      if(labelsLength > 15){
+        return selectedLabels.join(', ').slice(0, 15) + '...';
+      }
+    }
+
     if (selectedLabels.length > 2) {
       return `${selectedLabels.length} selezionati`;
     }
@@ -199,17 +219,9 @@ export class RicercaTabellaComponent implements OnInit {
     // Se NON c'è nessuna selezione, ritorna 'text-muted' (grigio), altrimenti testo scuro
     return hasSelection ? 'text-dark' : 'text-muted';
   }
-
-
 }
 
-
-
-
-
-
-
-//VALIDATORE
+// VALIDATORE
 export const almenoUnoObbligatorioValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
 
   // Se il controllo non è ancora pronto, evita controlli a vuoto
